@@ -9,8 +9,8 @@ In our implementation we play using only 1 deck of cards, although in casinos no
 The aim of the game is to get the sum of your cards to be as close as possible to 21, but not above, as this would result in you being 'bust' and losing. Cards 2-10 are worth the number on them, and Jacks, Queens and Kings are worth 10. An ace is worth 11 as long as valuing it as such doesn't cause the player to be bust, in this case the value changes to 1. 
 
 The game starts with both the gambler and dealer receiving a hand of 2 cards each. A player has 'Blackjack' if they have an ace and a card worth 10, meaning their hand has the highest value of 21. If there are any Blackjacks present the game will end immediately in one of three ways:
-• if the gambler has Blackjack and the dealer does not, the gambler wins automatically,
-• alternatively if the dealer has the only Blackjack, they win automatically,
-• and if they both have Blackjack, it is a tie.
+* if the gambler has Blackjack and the dealer does not, the gambler wins automatically,
+* alternatively if the dealer has the only Blackjack, they win automatically,
+* and if they both have Blackjack, it is a tie.
 
 If there are no Blackjacks, then the gambler must choose to 'stick' (not get anymore cards) or 'twist' (add 1 more card to their hand). 
