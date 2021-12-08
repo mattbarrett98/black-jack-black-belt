@@ -14,3 +14,19 @@ The game starts with both the gambler and dealer receiving a hand of 2 cards eac
 * and if they both have Blackjack, it is a tie.
 
 If there are no Blackjacks, then the gambler must choose to 'stick' (not get anymore cards) or 'twist' (add 1 more card to their hand). 
+
+At the start of each game, the dealer checks if the deck has at least 15 cards in it. If it does they deal as normal, if not they first shuffle all cards back together to reset the deck and then deal. 
+
+As mentioned we are going to simulate the games under the assumption that they know how to count cards. We will use the most common card counting strategy, the Hi-Lo strategy. It works by keeping a running count for the deck, which starts at 0 when the deck has just been shuffled and no cards have yet been dealt from the deck. The gambler adjusts the running count each time they observe a new card in the following way:
+* +1 for cards 2, 3, 4, 5, 6
+* +0 for cards 7, 8, 9
+* -1 for cards 10, J, Q, K, A 
+
+
+# State & Action space
+
+The gambler's state at any time is defined by 4 values: the current sum of the gamblers hand in [4,21], whether or not the gambler has an ace still worth 11 (1 if they do, 0 if not), the value of the dealer's face up card in [2,11] and the current card count in [-20,20].
+
+# Reinforcement learning
+
+The first approach we use is a simple Monte Carlo approach. We simulate a large number of games and 
