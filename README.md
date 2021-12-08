@@ -1,4 +1,4 @@
-# Using RL to crack Blackjack
+# Intro
 
 A project coding the popular casino game of Blackjack in C++. We code the game using object oriented programming (OOP), taking advantage of OOP concepts such as constructors, inheritance and composition. We then use reinforcement learning to try and learn the optimal strategy for Blackjack - in particular we will use the Monte Carlo control algorithm and the Q learning algorithm. 
 
