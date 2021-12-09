@@ -30,7 +30,7 @@ The state at any time is defined by 4 values: the current sum of the gamblers ha
 
 The first approach we use is a simple Monte Carlo approach. We simulate a game and apply the received reward to every state-action pair observed in the game. We define the received reward to be +1 if the gambler wins, 0 for a draw and -1 for a loss. After simulating a large number of games we calculate the mean reward for each state-action pair, and for each state we pick the optimal action to be the one with the highest mean reward. In RL terminology, we have 
 
-![formula](https://render.githubusercontent.com/render/math?math=e^{i\pi}=-1)
+![formula](https://render.githubusercontent.com/render/math?math=\pi(s)=argmax_{a \in A}Q(s,a))
 
 The policy of the gambler in these simulations is purely random, sticking or twisting with probability 0.5 no matter the state. We use multithreading to allow us to parallelise the simulations and take advantage of each of the 8 cores on our cpu. 
 
