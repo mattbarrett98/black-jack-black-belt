@@ -26,6 +26,8 @@ As mentioned we are going to simulate the games under the assumption that the ga
  
 
 # Reinforcement learning
-The state at any time is defined by 4 values: the current sum of the gamblers hand ∈ {4,5,...,21}, whether or not the gambler has an ace still worth 11 (1 if they do, 0 if not), the value of the dealer's face up card ∈ {2,3,...,11} and the current card count ∈ {-20,-19,...,20}. The possible actions of the gambler are just stick or twist (0 means stick, 1 means twist). 
+The state at any time is defined by 4 values: the current sum of the gamblers hand ∈ {4,5,...,21}, whether or not the gambler has an ace still worth 11 (1 if they do, 0 if not), the value of the dealer's face up card ∈ {2,3,...,11} and the current card count ∈ {-20,-19,...,20}. The possible actions of the gambler are just stick or twist. 
 
-The first approach we use is a simple Monte Carlo approach. We simulate a game and apply the received reward to every state-action pair observed in the game. We define the received reward to be +1 if the gambler wins, 0 for a draw and -1 for a loss. 
+The first approach we use is a simple Monte Carlo approach. We simulate a game and apply the received reward to every state-action pair observed in the game. We define the received reward to be +1 if the gambler wins, 0 for a draw and -1 for a loss. After simulating a large number of games we calculate the mean reward for each state-action pair, and for each state we pick the optimal action to be the one with the highest mean reward. The policy of the gambler in these simulations is purely random, sticking or twisting with probability 0.5 no matter the state. We use multithreading to allow us to parallelise the simulations and take advantage of each of the 8 cores on our cpu. 
+
+We play 125 million games in each of our 8 threads, for a total of 1 billion games (taking 18 minutes). Using the optimal policy found from this we play a further 1 million games in order to evaluate the policy. We find that under this policy, the gambler wins 42.78% of the games. 
