@@ -32,8 +32,6 @@ The first approach we use is a simple Monte Carlo approach. We simulate a game a
 
 ![formula](https://render.githubusercontent.com/render/math?math=\pi(s)=\Large\argmax_{a%20\in%20A}Q(s,a)) 
 
-where π(s) is our estimate of the optimal policy, A is the action space and Q(s,a) is the mean reward attained taking action a in state s.
-
-The policy of the gambler in these simulations is purely random, sticking or twisting with probability 0.5 no matter the state. We use multithreading to allow us to parallelise the simulations and take advantage of each of the 8 cores on our cpu. 
+where π(s) is our estimate of the optimal policy, A is the action space and Q(s,a) is the mean reward attained taking action a in state s. The policy of the gambler in these simulations is purely random, sticking or twisting with probability 0.5 no matter the state. We use multithreading to allow us to parallelise the simulations and take advantage of each of the 8 cores on our cpu. 
 
 We play 125 million games in each of our 8 threads, for a total of 1 billion games (taking 18 minutes). Using the optimal policy found from this we play a further 1 million games in order to evaluate the policy. We find that under this policy, the gambler wins 42.78% of the games. 
