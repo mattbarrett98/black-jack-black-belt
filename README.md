@@ -9,11 +9,13 @@ In our implementation we play using only 1 deck of cards, although in casinos no
 The aim of the game is to get the sum of your cards to be as close as possible to 21, but not above, as this would result in you being 'bust' and losing. Cards 2-10 are worth the number on them, and Jacks, Queens and Kings are worth 10. An ace is worth 11 as long as valuing it as such doesn't cause the player to be bust, in this case the value changes to 1. 
 
 The game starts with both the gambler and dealer receiving a hand of 2 cards each. A player has 'Blackjack' if they have an ace and a card worth 10, meaning their hand has the highest value of 21. If there are any Blackjacks present the game will end immediately in one of three ways:
-* if the gambler has Blackjack and the dealer does not, the gambler wins automatically,
-* alternatively if the dealer has the only Blackjack, they win automatically,
-* and if they both have Blackjack, it is a tie.
+* If the gambler has Blackjack and the dealer does not, the gambler wins automatically.
+* Alternatively if the dealer has the only Blackjack, they win automatically.
+* If they both have Blackjack, it is a draw.
 
-If there are no Blackjacks, then the gambler must choose to 'stick' (not get anymore cards) or 'twist' (add 1 more card to their hand). 
+If there are no Blackjacks, then the gambler must choose to 'stick' (not get anymore cards) or 'twist' (add 1 more card to their hand). If the gambler goes bust at any point they lose the game. If the gambler is not bust after making his decisions, then the dealer must stick or twist. Unlike the gambler, the dealer has no choice in his actions, they must stick if the value of their hand is ≥ 17, and twist otherwise. Finally, if the dealer busts he loses, or if not:
+* The player with the higher hand value wins,
+* Or it is a draw if both players have the same score.
 
 At the start of each game, the dealer checks if the deck has at least 15 cards in it. If it does they deal as normal, if not they first shuffle all cards back together to reset the deck and then deal. 
 
