@@ -30,8 +30,33 @@ The state at any time is defined by 4 values: the current sum of the gamblers ha
 
 The first approach we use is a simple Monte Carlo approach. We simulate a game and apply the received reward to every state-action pair observed in the game. We define the received reward to be +1 if the gambler wins, 0 for a draw and -1 for a loss. After simulating a large number of games we calculate the mean reward for each state-action pair, and for each state we pick the optimal action to be the one with the highest mean reward. In RL terminology, we have 
 
-![formula](https://render.githubusercontent.com/render/math?math=\pi(s)=\Large\argmax_{a%20\in%20A}Q(s,a)) 
+![formula](https://render.githubusercontent.com/render/math?math=\Large\pi(s)=\argmax_{a%20\in%20A}Q(s,a)) 
 
 where π(s) is our estimate of the optimal policy, A is the action space and Q(s,a) is the mean reward attained taking action a in state s. The policy of the gambler in these simulations is purely random, sticking or twisting with probability 0.5 no matter the state. We use multithreading to allow us to parallelise the simulations and take advantage of each of the 8 cores on our cpu. 
 
-We play 125 million games in each of our 8 threads, for a total of 1 billion games (taking 18 minutes). Using the optimal policy found from this we play a further 1 million games in order to evaluate the policy. We find that under this policy, the gambler wins 42.78% of the games. 
+We play 125 million games in each of our 8 threads, for a total of 1 billion games (taking 18 minutes). Using the optimal policy found from this we play a further 1 million games in order to evaluate the policy. We find that under this policy, the gambler:
+* wins 42.69%
+* draws 7.18%
+* loses 50.13%.
+
+It seems as though we could improve on this by using a more appropriate algorithm to find the optimal policy. For the Monte Carlo approach, the reward is applied to all state action pairs observed. This means that if the gambler wins the game then all the actions that he took in that game will be rewarded. This is problematic since it is likely that not all of the actions were actually the best choice, since their policy in this exploration phase is completely random. We propose instead the Q learning algorithm. We change the meaning of Q(s,a) to be the Q value associated with taking action a in state s. All Q values start at 0 and after each game we update our Q values for each state-action pair observed in the game:
+
+![formula](https://render.githubusercontent.com/render/math?math=\Large\Q(s,a)=Q(s,a)%2B\alpha\[r%2B\gamma\max_{a%20\in%20A}Q(s^{%27},a)%2DQ(s,a)\].)
+
+Here α is the learning rate, γ is the discount value and r is the reward for taking action a in state s. For the terminal state-action pair the reward is +1, 0, or -1 for a win, draw or loss, and r = 0 for all non-terminal state-action pairs. Also, s' is the state obtained after taking action a in state s. The max term is an estimate of the optimal future reward, which is 0 for the terminal state-action pair since there are no more actions to be taken. Setting γ = 1, we have 
+
+![formula](https://render.githubusercontent.com/render/math?math=\Large\Q(s,a)=Q(s,a)%2B\alpha\[\max_{a%20\in%20A}Q(s^{%27},a)%2DQ(s,a)\])
+
+for any non-terminal state-action pairs, and 
+
+![formula](https://render.githubusercontent.com/render/math?math=\Large\Q(s,a)=Q(s,a)%2B\alpha\[r%2DQ(s,a)\])
+
+for the terminal state-action pair.
+
+We play 10 million games (with random policy) and perform these Q value updates with α = 0.001. Then defining the optimal action given any state to be the one with the highest Q value, and playing another 1 million games adopting these optimal actions, the gambler:
+* wins 43.29%
+* draws 8.30%
+* loses 48.42%
+
+
+
