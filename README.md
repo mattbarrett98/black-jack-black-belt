@@ -1,6 +1,6 @@
 # Intro
 
-A project coding the popular casino game of Blackjack in C++. We code the game using object oriented programming (OOP), taking advantage of OOP concepts such as constructors, inheritance and composition. We then use reinforcement learning to try and learn the optimal strategy for Blackjack - in particular we will use the Monte Carlo control algorithm and the Q learning algorithm. 
+A project coding the popular casino game of Blackjack in C++. We code the game using object oriented programming (OOP), taking advantage of OOP concepts such as constructors, inheritance and composition. We then use reinforcement learning to try and learn the optimal strategy for Blackjack - in particular we will use the Monte Carlo control algorithm and the Q learning algorithm. This project is unique from a lot of material online since here we allow the optimal strategy to vary with the card count, whereas generally policies online are invariant to the card count.  
 
 # Set up 
 
@@ -13,11 +13,21 @@ The game starts with both the gambler and dealer receiving a hand of 2 cards eac
 * Alternatively if the dealer has the only Blackjack, they win automatically.
 * If they both have Blackjack, it is a draw.
 
-If there are no Blackjacks, then the gambler must choose to 'stick' (not get anymore cards) or 'twist' (add 1 more card to their hand). If the gambler goes bust at any point they lose the game. If the gambler is not bust after making his decisions, then the dealer must stick or twist. Unlike the gambler, the dealer has no choice in his actions, they must stick if the value of their hand is ≥ 17, and twist otherwise. Finally, if the dealer busts he loses, or if not:
+If there are no Blackjacks, then the gambler must choose to 'stand' (not get anymore cards) or 'hit' (add 1 more card to their hand). If the gambler goes bust at any point they lose the game. If the gambler is not bust after making his decisions, then the dealer must hit or stand. Unlike the gambler, the dealer has no choice in his actions, they must stand if the value of their hand is ≥ 17, and hit otherwise. Finally, if the dealer busts he loses, or if not:
 * The player with the higher hand value wins,
 * Or it is a draw if they both have the same score.
 
-At the start of each game, the dealer checks if the deck has at least 15 cards in it. If it does they deal as normal, if not they first shuffle all cards back together to reset the deck and then deal. 
+At the start of each game, the dealer checks if the deck has at least 13 cards (1/4 of the deck) in it. If it does they deal as normal, if not they first shuffle all cards back together to reset the deck and then deal. 
+
+## Split
+
+In addition to hitting and standing, the gambler has the choice to split after receiving their inital two cards if these cards have the same value. In this case they will separate their cards into two hands and are dealt another card for each hand, with the gambler's initial bet wagered on each hand. In the case of split aces, the gambler will receive the extra card for each hand and then has to stand on both of them. For any other split value, the gambler is allowed to take any further actions they like, playing each of their hands one at a time.       
+
+## Double down
+
+The last action that we allow the gambler in this implementation is double down. This is where after receiving their initial two cards, the gambler can double his bet under the condition that they will receive one and only one more card. Here we will allow the gambler to double down after splitting their hand (except of course for split aces).
+
+## Card counting
 
 As mentioned we are going to simulate the games under the assumption that the gambler knows how to count cards. We will use the most common card counting strategy, the Hi-Lo strategy. It works by keeping a running count for the deck, which starts at 0 when the deck has just been shuffled and no cards have yet been dealt from the deck. The gambler adjusts the running count each time they observe a new card in the following way:
 * +1 for cards 2, 3, 4, 5, 6
@@ -56,7 +66,26 @@ for the terminal state-action pair.
 We play 10 million games (with random policy) and perform these Q value updates with α = 0.001. Then defining the optimal action given any state to be the one with the highest Q value, and playing another 1 million games adopting these optimal actions, the gambler:
 * wins 43.29%
 * draws 8.30%
-* loses 48.42%
+* loses 48.42%.
 
+Looking deeper into the results of this Q learning algorithm, I noticed that the current card count has little to no effect on the optimal action for each state i.e. the optimal policy is roughly the same regardless of what the card count is. The use of card counting becomes apparent when we look at the win rate for different card counts:
+
+Card count before game | -4 | -3 | -2 | -1 | 0 | 1 | 2 | 3 | 4 |
+--- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+% games won | 42.33 | 42.24 | 42.88 | 42.98 | 43.24 | 43.71 | 43.66 | 43.83 | 44.62 |
+
+As the card count increases, the win rate increases as well. In plain terms, as the proportion of 10s and aces in the deck increases, the gambler becomes more likely to win. This is also of benefit to the gambler since more 10s and aces means more chance of getting Blackjack, which win more money than non-Blackjack wins. 
+
+# Betting
+
+Now we will explore how we can use the card count to the benefit of the gambler. So far we have looked at the win rates, but of course the objective of Blackjack is to try and make money. Now we know the gambler's chances of winning go up with the card count, we propose a realistic betting strategy that takes advantage of this. 
+
+For a card count ≤ 1, we bet the minimum. Ideally for negative card counts we would not bet since we know we are less likely to win, however this would likely attract suspicion. For a card count > 1, we bet the card count * minimum bet up to a maximum of 6 * minimum bet. Setting a maximum bet reduces the spread of your bets which again reduces chances of arousing suspicion and being removed from the casino. Let's assume a minimum bet of $1 and a card count c, then the bet is
+
+![formula](https://render.githubusercontent.com/render/math?math=\Large\text{%241%20%20if%20%20c%20}%3C%3D\1)
+
+![formula](https://render.githubusercontent.com/render/math?math=\Large\text{%24c%20%20if%20%202}%3C%3D\text{c}%3C%3D\5)
+
+![formula](https://render.githubusercontent.com/render/math?math=\Large\text{%246%20%20if%20%20c%20}%3E%3D\6.)
 
 
