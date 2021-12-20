@@ -96,4 +96,7 @@ For a card count ≤ 1, we bet our minimum which we choose to be $50. For a card
 
 ![formula](https://render.githubusercontent.com/render/math?math=\Large\text{%24500%20%20if%20%20c%20}%3E\10.)
 
+Now we have a policy and a betting strategy we are good to go. Let's get an idea of how much money someone with this knowledge could have made back when single deck Blackjack was the standard. A typical rate of play in Blackjack is 60 hands per hour, and let's pretend it is someone's full-time job to play Blackjack with our strategy. Let's call a typical work week 35 hours, then with 52 weeks in the year this lucky person would play 60*35*52 = 109,200 hands. 
+
+We perform 5 independent simulations each with 109,200 games with our optimal policy and betting strategy (to prove the profitability is consistent and not just a fluke). The simulations yield profits of $156k, $242k, $184k, $159k and $165k. The average of these being around $181,000 which would put you in the top 5% of earners in the USA. Not bad.  
 
