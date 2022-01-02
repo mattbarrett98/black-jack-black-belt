@@ -1,7 +1,12 @@
 # Intro
 
-A project coding the popular casino game of Blackjack in C++. We code the game using object oriented programming (OOP), taking advantage of OOP concepts such as constructors, inheritance and composition. We then use reinforcement learning to try and learn the optimal strategy for Blackjack - in particular we will use the Monte Carlo control algorithm and the Q learning algorithm. This project is unique from a lot of material online since here we allow the optimal strategy to vary with the card count, whereas generally policies online are invariant to the card count.  
+A project coding the popular casino game of Blackjack in C++. We use reinforcement learning to try and learn the optimal strategy for Blackjack - in particular we will use the Monte Carlo control algorithm and the Q learning algorithm. This project is unique from a lot of material online since here we allow the optimal strategy to vary with the card count, whereas generally policies online are invariant to the card count.  
 
+I have used this project to teach myself many different things, namely:
+* **Object oriented programming** in C++ (constructors, inheritance, composition etc)
+* **Multithreading**- to use all cpu cores to run simulations, speeding up code
+* **Unit testing**- to ensure important parts of the code function as expected
+* **Tableau**- to create a dashboard to summarise the project with some nice visualisations
 
 # Set up 
 
